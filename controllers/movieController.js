@@ -1,4 +1,6 @@
 const connection = require('../data/db')
+const setimagePath = require('../middlewares/imagePath')
+
 
 const index = (req, res) => {
 
@@ -6,6 +8,7 @@ const index = (req, res) => {
 
   connection.query(sql, (err, results) => {
     if (err) return res.status(500).json({ error: 'Richiesta al database fallita' })
+
     res.json(results)
   })
 }
@@ -29,8 +32,9 @@ const show = (req, res) => {
 
     connection.query(sqlMovies, [id], (err, movieResults) => {
       if (err) return res.status(500).json({ error: 'Richiesta al database fallita' })
-      movie.reviews = movieResults
-      res.json(movie)
+
+      const fullImagePath = `${req.imagePath}/${movie.image}`
+      res.json({ ...movie, image: fullImagePath, reviews: movieResults })
 
     })
   })
