@@ -2,6 +2,8 @@ const connection = require('../data/db')
 const setimagePath = require('../middlewares/imagePath')
 
 
+
+
 const index = (req, res) => {
 
   const sql = 'SELECT * FROM movies'
@@ -9,7 +11,11 @@ const index = (req, res) => {
   connection.query(sql, (err, results) => {
     if (err) return res.status(500).json({ error: 'Richiesta al database fallita' })
 
-    res.json(results)
+    const newResults = results.map(result => (
+      { ...result, image: `${req.imagePath}/${result.image}` }
+    ))
+
+    res.json(newResults)
   })
 }
 
