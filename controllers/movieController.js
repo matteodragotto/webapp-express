@@ -6,7 +6,11 @@ const setimagePath = require('../middlewares/imagePath')
 
 const index = (req, res) => {
 
-  const sql = 'SELECT * FROM movies'
+  const sql = `SELECT movies.*, ROUND(AVG(reviews.vote)) AS media_voti 
+   FROM movies
+   JOIN reviews on reviews.movie_id = movies.id
+   GROUP BY movies.id;
+   `
 
   connection.query(sql, (err, results) => {
     if (err) return res.status(500).json({ error: 'Richiesta al database fallita' })
@@ -24,7 +28,7 @@ const show = (req, res) => {
   const sql = 'SELECT * FROM movies WHERE id = ?'
 
   const sqlMovies = `
-  SELECT * 
+  SELECT *
   FROM reviews
   WHERE reviews.id = ?
   `
