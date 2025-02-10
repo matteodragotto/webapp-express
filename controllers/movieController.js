@@ -50,8 +50,25 @@ const show = (req, res) => {
   })
 }
 
-const store = (req, res) => {
-  res.send('Aggiungo un film')
+const storeReviews = (req, res) => {
+  const id = req.params.id
+
+  const { name, text, vote } = req.body;
+
+  if (!name || !text || !vote) {
+    return res.status(400).json({ error: 'All fields are required' });
+  }
+
+  const sql = 'INSERT INTO reviews (movie_id, name, text, vote) VALUES (?, ?, ?, ?)'
+
+  connection.query(sql, [id, name, text, vote], (err, results) => {
+    if (err) return res.status(500).json({ error: 'Richiesta al database fallita' })
+
+    res.json({
+      message: 'Review successfully added'
+    });
+  })
+
 }
 
 const update = (req, res) => {
@@ -78,7 +95,7 @@ const destroy = (req, res) => {
 module.exports = {
   index,
   show,
-  store,
+  storeReviews,
   update,
   modify,
   destroy

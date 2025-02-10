@@ -10,7 +10,7 @@ router.get('/', movieController.index);
 router.get('/:id', movieController.show);
 
 //store
-router.post('/', movieController.store);
+router.post('/:id', movieController.storeReviews);
 
 //update
 router.put('/:id', movieController.update);
