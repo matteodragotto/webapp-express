@@ -65,7 +65,7 @@ const storeReviews = (req, res) => {
     if (err) return res.status(500).json({ error: 'Richiesta al database fallita' })
 
     res.json({
-      message: 'Review successfully added'
+      message: 'Recensione aggiunta con successo'
     });
   })
 
