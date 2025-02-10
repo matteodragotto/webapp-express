@@ -56,7 +56,7 @@ const storeReviews = (req, res) => {
   const { name, text, vote } = req.body;
 
   if (!name || !text || !vote) {
-    return res.status(400).json({ error: 'All fields are required' });
+    return res.status(400).json({ error: 'Tutti i campi sono necessari' });
   }
 
   const sql = 'INSERT INTO reviews (movie_id, name, text, vote) VALUES (?, ?, ?, ?)'
