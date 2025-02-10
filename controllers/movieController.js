@@ -72,13 +72,21 @@ const storeReviews = (req, res) => {
 }
 
 const update = (req, res) => {
-  const id = req.params.id
+  const { id } = req.params.id
   res.send(`Modifico il film con id ${id}`)
 }
 
-const modify = (req, res) => {
-  const id = req.params.id
-  res.send(`Modifico il film con id ${id}`)
+const modifyReviews = (req, res) => {
+  const id = req.body.reviewId
+
+  const sql = 'UPDATE reviews SET likes = likes + 1 WHERE reviews.id = ?'
+  connection.query(sql, [id], (err, results) => {
+    if (err) return res.status(500).json({ error: 'Richiesta al database fallita' })
+
+    res.json({
+      message: 'Numero dei like della review aumentati con successo'
+    });
+  })
 }
 
 const destroy = (req, res) => {
@@ -97,6 +105,6 @@ module.exports = {
   show,
   storeReviews,
   update,
-  modify,
+  modifyReviews,
   destroy
 }

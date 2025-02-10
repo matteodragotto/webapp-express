@@ -9,14 +9,14 @@ router.get('/', movieController.index);
 //show
 router.get('/:id', movieController.show);
 
-//store
+//store per Reviews
 router.post('/:id', movieController.storeReviews);
 
 //update
 router.put('/:id', movieController.update);
 
-//modify
-router.patch('/:id', movieController.modify);
+//modify per Reviews
+router.patch('/reviews/:id/', movieController.modifyReviews);
 
 //destroy
 router.delete('/:id', movieController.destroy)
