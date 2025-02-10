@@ -30,7 +30,7 @@ const show = (req, res) => {
   const sqlMovies = `
   SELECT *
   FROM reviews
-  WHERE reviews.id = ?
+  WHERE reviews.movie_id = ?
   `
 
   connection.query(sql, [id], (err, results) => {
