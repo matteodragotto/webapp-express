@@ -5,7 +5,7 @@ const index = (req, res) => {
 
   const sql = `SELECT movies.*, ROUND(AVG(reviews.vote)) AS media_voti 
    FROM movies
-   JOIN reviews on reviews.movie_id = movies.id
+   LEFT JOIN reviews on reviews.movie_id = movies.id
    GROUP BY movies.id;
    `
 
@@ -50,10 +50,11 @@ const show = (req, res) => {
 
 const store = (req, res) => {
   const { title, director, genre, release_year, abstract } = req.body
+  const imageName = req.file.filename;
 
   const sql = 'INSERT INTO movies (title, director, genre, release_year, abstract, image) VALUES (?, ?, ? , ?, ?, ?)'
 
-  connection.query(sql, [title, director, genre, release_year, abstract, image], (err, results) => {
+  connection.query(sql, [title, director, genre, release_year, abstract, imageName], (err, results) => {
 
     if (err) return res.status(500).json({ error: 'Richiesta al database fallita' })
 
