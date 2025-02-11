@@ -1,6 +1,7 @@
 const express = require('express');
 const movieController = require('../controllers/movieController')
 const router = express.Router();
+const upload = require('../middlewares/multer')
 
 
 //index
@@ -8,6 +9,9 @@ router.get('/', movieController.index);
 
 //show
 router.get('/:id', movieController.show);
+
+//store
+router.post('/', upload.single('image'), movieController.store)
 
 //store per Reviews
 router.post('/:id', movieController.storeReviews);

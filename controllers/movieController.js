@@ -1,9 +1,6 @@
 const connection = require('../data/db')
 const setimagePath = require('../middlewares/imagePath')
 
-
-
-
 const index = (req, res) => {
 
   const sql = `SELECT movies.*, ROUND(AVG(reviews.vote)) AS media_voti 
@@ -48,6 +45,23 @@ const show = (req, res) => {
 
     })
   })
+}
+
+
+const store = (req, res) => {
+  const { title, director, genre, release_year, abstract } = req.body
+
+  const sql = 'INSERT INTO movies (title, director, genre, release_year, abstract, image) VALUES (?, ?, ? , ?, ?, ?)'
+
+  connection.query(sql, [title, director, genre, release_year, abstract, image], (err, results) => {
+
+    if (err) return res.status(500).json({ error: 'Richiesta al database fallita' })
+
+    res.json({
+      message: 'Film aggiunto con successo'
+    });
+  })
+
 }
 
 const storeReviews = (req, res) => {
@@ -103,6 +117,7 @@ const destroy = (req, res) => {
 module.exports = {
   index,
   show,
+  store,
   storeReviews,
   update,
   modifyReviews,
