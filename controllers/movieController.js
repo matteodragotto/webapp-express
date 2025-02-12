@@ -1,5 +1,7 @@
 const connection = require('../data/db')
 const setimagePath = require('../middlewares/imagePath')
+const path = require('path')
+const fs = require('fs')
 
 const index = (req, res) => {
 
@@ -106,11 +108,23 @@ const modifyReviews = (req, res) => {
 
 const destroy = (req, res) => {
   const id = req.params.id
-  const sql = 'DELETE FROM movies WHERE movies.id = ?'
 
-  connection.query(sql, [id], (err) => {
-    if (err) return res.status(500).json({ error: 'Non è stato possibile eliminare il film' })
-    res.sendStatus(204)
+  const selectSql = 'SELECT image FROM movies WHERE movies.id = ?'
+  const sqlDelete = 'DELETE FROM movies WHERE movies.id = ?'
+
+  connection.query(selectSql, [id], (err, results) => {
+    const imageName = results[0].image
+    const imagePath = path.join(__dirname, '../img/movies', imageName)
+
+    fs.unlink(imagePath, (err) => {
+      console.log(err);
+    })
+
+    connection.query(sqlDelete, [id], (err) => {
+      if (err) return res.status(500).json({ error: 'Non è stato possibile eliminare il film' })
+      res.json({ message: 'Film eliminato con successo' })
+    })
+
   })
 }
 
