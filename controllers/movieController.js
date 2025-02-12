@@ -114,7 +114,7 @@ const destroy = (req, res) => {
 
   connection.query(selectSql, [id], (err, results) => {
     const imageName = results[0].image
-    const imagePath = path.join(__dirname, '../img/movies', imageName)
+    const imagePath = path.join(__dirname, '../public/img/movies', imageName)
 
     fs.unlink(imagePath, (err) => {
       console.log(err);
